@@ -1,6 +1,7 @@
 get_runs <- function (file_coord, ctrl) {
   
-  location <- read_csv(file = file_coord, show_col_types = FALSE, progress = FALSE )
+  location <- read_excel(file_coord)
+  location<-convert_Belgian_decimal(coord=location)
   x_crd <- location$x
   y_crd <- location$y
   
@@ -394,3 +395,24 @@ prec_deficit<- function(file_sql, dir_met, start, end, discr) {
   return (def)
 } 
 
+convert_Belgian_decimal <- function(coord){
+  
+  #Input parameters
+  #coordinates in decimals, lat, lon
+  
+  #Returns
+  #coordinates in Belgian Lambert 72 (EPSG:31370)
+  
+  
+  coordinates(coord) <- c("lon", "lat")
+  proj4string(coord) <- CRS("+init=epsg:4326") # WGS 84
+  
+  wgs84 <- CRS("EPSG:4326")
+  Belgian <- CRS("EPSG:31370")
+  
+  coord_belgian <- spTransform(coord, Belgian)
+  coord_belgian<-as.data.frame(coord_belgian)%>%
+    rename(x=lon, y=lat)
+  
+  return(coord_belgian)
+}

@@ -15,8 +15,8 @@ repos_LOCAL <- "file:./libraries"                 # path to LOCAL-repository
 dir_pkg <- NULL                               # in case of default R settings use 'NULL'
 
 # set packages to load
-pkg_load <- c("stringr", "fs", "progress", "tibble", "dplyr", "reshape2","readr","ggplot2",
-              "ggpubr","lubridate", "grid", "ascR", "controlR", "RSQLite", "SWAPtools","WWLanalyse")
+pkg_load <- c("stringr", "fs", "progress", "tibble", "dplyr", "reshape2","readr","readxl","ggplot2",
+              "ggpubr","rgdal","lubridate", "grid", "ascR", "controlR", "RSQLite", "SWAPtools","WWLanalyse")
 
 # main part of procedure
 #------------------------------------------------

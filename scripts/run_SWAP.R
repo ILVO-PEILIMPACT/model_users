@@ -54,9 +54,9 @@ message(str_c("\nGenerate input data...\n"))
 indirect <- TRUE
 
 #Reading coordinates 
-
-file_coord <- "./input_user.csv"
-location <- read_csv(file = file_coord, show_col_types = FALSE, progress = FALSE )
+file_coord <- "./input_user.xlsx"
+location <- read_excel(file_coord)
+location<-convert_Belgian_decimal(coord=location)
 x_crd <- location$x
 y_crd <- location$y
 
