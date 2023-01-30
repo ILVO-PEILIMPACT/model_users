@@ -293,7 +293,7 @@ get_data_procc<- function(run_id, dir_run, file_sql) {
     file_move(path = path, new_path = new_path)
    
     #Erase unnecessary files
-    pattern<-"*.crp|*.swp|*.wwl"
+    pattern<-"*.wwl"
     filetoremove<-list.files(new_path, recursive = TRUE, pattern = pattern)
     file.remove(suppressWarnings(file.path(new_path, filetoremove)))
   }
