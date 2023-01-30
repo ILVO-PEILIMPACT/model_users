@@ -1,7 +1,7 @@
 # SWAP-WOFOST model for Flanders in the context of the project PEILIMPACT
 # Flanders Research Institute for Agriculture, Fisheries and Food (ILVO) & Wageningen Environmental Research
-# Original code received from Martin Mulder on March 2022, License: GPL (>= 3)
-# Changes for project PEILIMPACT made by Diana Estrella
+# Original code received from Martin Mulder <Martin2.Mulder@wur.nl> on March 2022, License: GPL (>= 3)
+# Changes for project PEILIMPACT made by Diana Estrella <diana.estrella@ilvo.vlaanderen.be>
 
 
 #This code is organized in four parts:
@@ -280,7 +280,6 @@ for (s_run_id in run_id){
       stringr::str_wrap(x, width = 8))%>%
     + theme(legend.position="top")
   
-  ggsave(filename =str_c(dir_plots,"/average_yield.png"), plot =plot_yield, width = 10, height = 6)
   
   #Transpiration reduction
   
@@ -297,7 +296,7 @@ for (s_run_id in run_id){
   Transp <- ggplot(data = yield_reduction) %>%
     + geom_col(aes(x = as.character(year), y = value, fill = yield_red), alpha=0.8 , width = 0.5) %>%
     + scale_fill_manual(values=c("dry"="red3", "wet"="dodgerblue3","indirect"="navajowhite3"))%>%
-    + labs(x="", y = "Yield reduction(%)", fill = "Stress type") %>%
+    + labs(x="", y = "Yield reduction (%)", fill = "Stress type") %>%
     + theme_light()%>%
     + theme(text=element_text(size=size), legend.position="top")
   
@@ -310,11 +309,12 @@ for (s_run_id in run_id){
     + theme(text=element_text(size=20))
   
   boxplot_deficit<-ggarrange(plot0,
+                             plot_yield,
                              Transp,
-                             nrow = 2,
+                             nrow = 3,
                              ncol = 1)
 
-  ggsave(filename = str_c(dir_plots,"/yield_reduction.png"), plot =boxplot_deficit, width = 10, height = 8)
+  ggsave(filename = str_c(dir_plots,"/yield_reduction.png"), plot =boxplot_deficit, width = 10, height = 10)
 
   #Saving summary table 
   
