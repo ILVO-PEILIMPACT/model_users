@@ -9,4 +9,4 @@ This version was prepared by ILVO in the context of the project PEILIMPACT. See 
 
 # Disclaimer
 
-This project includes a disclaimer. See **DISCLAIMER.md** for details.
+This model version includes a disclaimer. See **DISCLAIMER.md** for details.
