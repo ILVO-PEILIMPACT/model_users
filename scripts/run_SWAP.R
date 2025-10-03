@@ -56,7 +56,7 @@ indirect <- TRUE
 #Reading coordinates 
 file_coord <- "./input_user.xlsx"
 location <- read_excel(file_coord)
-location<-convert_Belgian_decimal(coord=location)
+location <- convert_Belgian_decimal(coord=location)
 x_crd <- location$x
 y_crd <- location$y
 

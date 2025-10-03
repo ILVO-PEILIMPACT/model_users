@@ -1,14 +1,5 @@
 get_runs <- function (file_coord, ctrl) {
   
-  location <- read_excel(file_coord)
-  location<-convert_Belgian_decimal(coord=location)
-  x_crd <- location$x
-  y_crd <- location$y
-  
-  #Simulation period
-  START <- location$start
-  END <- location$end
-  
   #Input layers from control file
   soil_layer <- get_record(file = ctrl, item = "SOIL")
   gwl_layer <- get_record(file = ctrl, item = "AVGGWL")
