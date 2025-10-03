@@ -158,14 +158,13 @@ get_main_database <- function(database) {
 #Create the sqlite database
 create_sqlite <- function(list_data, database, START, END) {
   
-  suppressWarnings(dir.create("./model/sqlite_database"))
+  dir.create("./model/sqlite_database", showWarnings = FALSE, recursive = TRUE)
   
   file_sql <-"./model/sqlite_database/input_data.sqlite"
-  suppressWarnings(if (file_exists(file_sql)) {
-    file_delete(file_sql)
-  } else {
-    message ("\nCreating an input database... \n")
-  })
+  # If file exists, delete it
+  if (file.exists(file_sql)) {
+    try(unlink(file_sql), silent = TRUE)
+  }
   
   #open and writing the sqlite file
   
@@ -395,7 +394,7 @@ prec_deficit<- function(file_sql, dir_met, start, end, discr) {
   return (def)
 } 
 
-convert_Belgian_decimal <- function(coord){
+convert_Belgian_decimal <- function(coord) {
   
   #Input parameters
   #coordinates in decimals, lat, lon
@@ -403,16 +402,17 @@ convert_Belgian_decimal <- function(coord){
   #Returns
   #coordinates in Belgian Lambert 72 (EPSG:31370)
   
+  coord_wgs84 <- st_as_sf(coord, coords = c("lon", "lat"), crs = 4326, remove = FALSE) # WGS84
+  coord_lambert <- st_transform(coord_wgs84, 31370) # Lambert 72
   
-  coordinates(coord) <- c("lon", "lat")
-  proj4string(coord) <- CRS("+init=epsg:4326") # WGS 84
-  
-  wgs84 <- CRS("EPSG:4326")
-  Belgian <- CRS("EPSG:31370")
-  
-  coord_belgian <- spTransform(coord, Belgian)
-  coord_belgian<-as.data.frame(coord_belgian)%>%
-    rename(x=lon, y=lat)
+  # extract coordinates into data.frame with x,y
+  coords_df <- st_coordinates(coord_lambert) %>%
+    as.data.frame() %>%
+    rename(x = X, y = Y)
+
+  # Combine coordinates with original columns
+  coord_belgian <- bind_cols(coord %>% select(-all_of(c("lon", "lat"))), coords_df)
   
   return(coord_belgian)
 }
+

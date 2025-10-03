@@ -9,14 +9,16 @@
 
 # general R-settings
 repos_CRAN <- "https://cloud.r-project.org/"  # default CRAN-repository
-repos_LOCAL <- "file:./libraries"                 # path to LOCAL-repository
+repos_LOCAL <- "file:./libraries/local"                 # path to LOCAL-repository
 
 # install settings
-dir_pkg <- NULL                               # in case of default R settings use 'NULL'
+dir_pkg <- "./libraries/library"                         # in case of default R settings use 'NULL'
 
 # set packages to load
-pkg_load <- c("stringr", "fs", "progress", "tibble", "dplyr", "reshape2","readr","readxl","ggplot2",
-              "ggpubr","rgdal","lubridate", "grid", "ascR", "controlR", "RSQLite", "SWAPtools","WWLanalyse")
+
+pkg_load <- c ("stringr", "fs", "lubridate", "progress", "tibble", "dplyr", "readr", "sf","ggplot2", "reshape2","readxl",
+              "ggpubr", "ascR", "controlR", "RSQLite", "SWAPtools","WWLanalyse")
+
 
 # main part of procedure
 #------------------------------------------------
@@ -57,12 +59,12 @@ if (online & update) {
   # update required CRAN-packages
   pkg_check <- pkg_depend[pkg_depend %in% pkg_installed]
   pkg_update <- pkg_check[pkg_check %in% old.packages(repos = repos_CRAN)[, "Package"]]
-  if (length(pkg_update) > 0) update.packages(lib.loc = dir_pkg, repos = repos_CRAN, oldPkgs = pkg_update, ask = FALSE)
+  if (length(pkg_update) > 0) update.packages(lib.loc = dir_pkg, repos = repos_CRAN, oldPkgs = pkg_update, ask = FALSE, type = "binary")
   
   # update required R-packages
   if (!is.null(repos_LOCAL)) {
     pkg_update <- pkg_load[pkg_load %in% old.packages(repos = repos_LOCAL)[, "Package"]]
-    if (length(pkg_update) > 0) update.packages(lib.loc = dir_pkg, repos = repos_LOCAL, oldPkgs = pkg_update, ask = FALSE)
+    if (length(pkg_update) > 0) update.packages(lib.loc = dir_pkg, repos = repos_LOCAL, oldPkgs = pkg_update, ask = FALSE, type = "binary")
   }
 }
 
@@ -76,7 +78,7 @@ for (s_pkg in pkg_load) {
     if (!online) {
       stop(paste0("failed to load package: ", s_pkg))
     } else {
-      suppressWarnings(suppressPackageStartupMessages(install.packages(pkg = s_pkg, dependencies = TRUE, lib = dir_pkg, quiet = TRUE)))
+      suppressWarnings(suppressPackageStartupMessages(install.packages(pkg = s_pkg, dependencies = TRUE, lib = dir_pkg, quiet = TRUE, type = "binary")))
       if (suppressWarnings(suppressPackageStartupMessages(require(package = s_pkg, lib.loc = dir_pkg, character.only = TRUE, warn.conflicts = FALSE, quietly = TRUE)))) {
         message(paste0("- package '", s_pkg, "' installed"))
       } else {
